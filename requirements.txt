@@ -1,1 +1,4 @@
 #for develop, debug.
+fastapi[standard]
+sqlmodel
+psycopg2-binary

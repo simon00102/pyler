@@ -1,0 +1,5 @@
+fastapi[standard]
+sqlmodel
+psycopg2-binary
+pyjwt
+passlib[bcrypt]
