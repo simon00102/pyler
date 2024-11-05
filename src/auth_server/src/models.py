@@ -6,15 +6,14 @@ from database import Base
 user_roles = Table(
     "user_roles",
     Base.metadata,
-    Column("user_id", ForeignKey("users.id"), primary_key=True),
+    Column("username", ForeignKey("users.username"), primary_key=True),
     Column("role_id", ForeignKey("roles.id"), primary_key=True)
 )
 
 class User(Base):
     __tablename__ = "users"
     
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True, autoincrement=True)
-    username: Mapped[str] = mapped_column(String, unique=True, index=True)
+    username: Mapped[str] = mapped_column(String, primary_key=True, unique=True, index=True)
     password: Mapped[str] = mapped_column(String)
     email: Mapped[str] = mapped_column(String, unique=True, index=True)
     
