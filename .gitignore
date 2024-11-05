@@ -1,3 +1,10 @@
 /venv
 /.vscode
 /__pycache__
+
+src/auth/__pycache__/auth_main.cpython-311.pyc
+src/auth/__pycache__/database.cpython-311.pyc
+src/auth/datatypes/models/__pycache__/base.cpython-311.pyc
+src/auth/datatypes/models/__pycache__/roles.cpython-311.pyc
+src/auth/datatypes/models/__pycache__/user_roles.cpython-311.pyc
+src/auth/datatypes/models/__pycache__/users.cpython-311.pyc

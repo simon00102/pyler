@@ -26,3 +26,7 @@
 3. API Doc
 4. DB ERD
 5. readme.md
+
+
+## Minor Issue Note
+passlib deprecated 되어 최신 bcrypt와 호환 안됨. 버전 맞춰줘야 함.
