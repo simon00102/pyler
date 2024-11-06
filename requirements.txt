@@ -1,8 +1,0 @@
-#for develop, debug.
-fastapi[standard]
-SQLAlchemy
-psycopg2-binary
-pyjwt
-bcrypt==4.0.1
-passlib==1.7.4
-requests
