@@ -1,0 +1,4 @@
+SECRET_KEY = "supersecretkey"
+ALGORITHM = "HS256"
+
+YOUTUBE_API_KEY = "AIzaSyC_AeYlMHSoT88s3vSya1sZThPQy0e0Z1g"

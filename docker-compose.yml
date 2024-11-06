@@ -1,26 +1,54 @@
 version: '3.8'
 
 services:
-  pyler_auth:
-    image: auth:latest
-    container_name: auth_service
-    ports:
-      - "8001:8000"
+  auth_db_init:
+    image: simon00102/auth:latest
+    container_name: auth_db_init_service
     depends_on:
       pyler_db:
         condition: service_healthy  # 데이터베이스가 준비된 후에 시작
     environment:
       - DATABASE_URL=postgresql://pyler:pyler1!@pyler_db:5432/pyler
-      
-  # api:
-  #   build: ./video_hub/api
-  #   container_name: video_hub_api
-  #   ports:
-  #     - "8000:8000"
+    entrypoint: ["python", "init_db.py"]
+    restart: "on-failure"
 
-  # crawler:
-  #   build: ./video_hub/crawler
-  #   container_name: video_hub_crawler
+  pyler_auth:
+    image: simon00102/auth:latest
+    container_name: auth_service
+    ports:
+      - "8001:8001"
+    depends_on:
+      pyler_db:
+        condition: service_healthy  # 데이터베이스가 준비된 후에 시작
+      auth_db_init:
+        condition: service_completed_successfully  # db_init 실행 완료 후 시작
+    environment:
+      - DATABASE_URL=postgresql://pyler:pyler1!@pyler_db:5432/pyler
+      
+  video_hub_db_init:
+    image: simon00102/video-hub:latest
+    container_name: video_hub_db_init_service
+    depends_on:
+      pyler_db:
+        condition: service_healthy  # 데이터베이스가 준비된 후에 시작
+    environment:
+      - DATABASE_URL=postgresql://pyler:pyler1!@pyler_db:5432/pyler
+    entrypoint: ["python", "init_db.py"]
+    restart: "on-failure"
+
+  video_hub:
+    image: simon00102/video-hub:latest
+    container_name: video_hub_service
+    ports:
+      - "8000:8000"
+    depends_on:
+      pyler_db:
+        condition: service_healthy  # 데이터베이스가 준비된 후에 시작
+      video_hub_db_init:
+        condition: service_completed_successfully  # db_init 실행 완료 후 시작
+    environment:
+      - DATABASE_URL=postgresql://pyler:pyler1!@pyler_db:5432/pyler
+
 
   pyler_db:
     image: postgres:latest

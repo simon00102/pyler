@@ -1,5 +1,5 @@
 fastapi[standard]
-sqlmodel
+SQLAlchemy
 psycopg2-binary
 pyjwt
 bcrypt==4.0.1

@@ -1,12 +1,21 @@
 from typing import Annotated
 from fastapi import FastAPI, Depends, HTTPException, status
 
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 import models, schemas, auth
 from database import get_db
 
 app = FastAPI(version="v1.0.0", title="Pyler Auth Server", description="Pyler Auth Server API")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # 필요한 경우 특정 출처로 제한할 수 있습니다.
+    allow_credentials=True,
+    allow_methods=["*"],  # 모든 메서드 허용
+    allow_headers=["*"],  # 모든 헤더 허용
+)
 
 @app.post("/register", response_model=schemas.UserCreate, tags=["User"])
 async def register_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
@@ -36,7 +45,7 @@ async def register_user(user: schemas.UserCreate, db: Session = Depends(get_db))
     return db_user
 
 @app.post("/login", response_model=schemas.Token, tags=["User"])
-async def login_for_access_token(user: schemas.UserLogin, db: Session = Depends(get_db)):
+def login_for_access_token(user: schemas.UserLogin, db: Session = Depends(get_db)):
     '''정상 로그인 시 액세스토큰(jwt) 반환'''
     db_user = db.query(models.User).filter(models.User.username == user.username).first()
     if not db_user or not auth.verify_password(user.password, db_user.password):
@@ -49,13 +58,13 @@ async def login_for_access_token(user: schemas.UserLogin, db: Session = Depends(
     return {"access_token": access_token, "token_type": "bearer"}
 
 @app.post("/token", response_model=schemas.Token, tags=["User"])
-async def login_oauth2_password_flow(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db: Session = Depends(get_db)):
+def login_oauth2_password_flow(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db: Session = Depends(get_db)):
     '''OAuth2 Password flow entry point.
     swagger doc 편의 기능을 위해 OAuth2PasswordRequestForm을 사용하는 login 추가.'''
     return login_for_access_token(schemas.UserLogin(username=form_data.username, password=form_data.password), db=db)
 
 @app.post("/assign-role", response_model=schemas.Message, tags=["Admin"])
-async def assign_role_to_user(
+def assign_role_to_user(
     user_role: schemas.UserRoleCreate,
     current_user: str = Depends(auth.verify_admin_access_token),  # 현재 사용자가 admin 권한을 가진 경우만 접근 가능
     db: Session = Depends(get_db)
@@ -78,3 +87,8 @@ async def assign_role_to_user(
         db.commit()
     
     return {"message" : f"Role {target_role.name} assigned to user {target_user.username}"}
+
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8001)

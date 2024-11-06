@@ -1,0 +1,5 @@
+fastapi[standard]
+SQLAlchemy
+requests
+psycopg2-binary
+pyjwt
