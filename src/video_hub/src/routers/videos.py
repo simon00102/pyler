@@ -8,6 +8,8 @@ from schemas import VideoCreate, VideoResponse
 import utils.auth as auth
 from cores.videos import create_video, get_video_details, delete_video, get_all_videos
 from cores.exceptions import NotFoundException, InvalidURLFormatException, AlreadyExistsException
+from task import insert_video_statistics
+
 router = APIRouter(tags=["Videos"])
 
 # Video Management Endpoints
@@ -50,3 +52,9 @@ def delete_video_entry(video_id: str, current_user: str = Depends(auth.verify_ad
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
     return None
 
+
+@router.post("/task", status_code=status.HTTP_200_OK)
+async def trigger_update_task(current_user: str = Depends(auth.verify_admin_role), db: Session = Depends(get_db)):
+    ''' 통계 업데이트 태스크 트리거 '''
+    await insert_video_statistics(db)
+    return None
