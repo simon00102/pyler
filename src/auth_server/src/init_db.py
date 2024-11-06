@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from database import engine, Base, SessionLocal
+from database import engine, Base
 import models
 import auth
 

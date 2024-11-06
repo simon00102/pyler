@@ -1,7 +1,5 @@
 from sqlalchemy import Engine, create_engine
-from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy.orm import MappedAsDataclass
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import DeclarativeBase, sessionmaker
 from sqlalchemy.orm.session import Session
 
 #for local debug
