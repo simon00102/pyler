@@ -13,8 +13,8 @@ DB -> 기본 테이블 및 데이터 Initialize -> API 서버 순으로 실행 �
 2. 아래 \[활용방법\]을 이용해 API를 활용해보면 된다.
 
 ## 활용방법
-1. localhost:8000/docs에 접근해 인증/인가 서버 명세 확인 및 API 테스트 수행.
-2. localhost:8001/docs에 접근해 비디오 허브 서버 명세 확인 및 API 테스트 수행.
+1. localhost:8001/docs에 접근해 인증/인가 서버 명세 확인 및 API 테스트 수행.
+2. localhost:8000/docs에 접근해 비디오 허브 서버 명세 확인 및 API 테스트 수행.
 3. 로그인 방법 : Authorize 내에 필요한 권한을 가진 username/password 입력.
 
 ![alt text](resources/authorize.png) ![alt text](resources/authorize2.png)
@@ -64,7 +64,8 @@ admin : 계정 admin 권한 부여, video 추가/삭제, video 조회
 3. 유저 - 권한 M:M
 
 ### 2. 비디오 허브 API 서버
-유튜브 정보 수집 및 통계 제공 서비스.
+유튜브 정보 수집 및 통계 제공 서비스. 실제 Yotube Data API와 연동.
+
 #### 제공 API List
 ![alt text](resources/video-hub-docs.png)
 1. Video 전체 조회
