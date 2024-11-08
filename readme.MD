@@ -10,7 +10,7 @@
 
 DB -> 기본 테이블 및 데이터 Initialize -> API 서버 순으로 실행 됨
 
-2. 아래 활용방법을 이용해 API를 활용해보면 된다.
+2. 아래 \[활용방법\]을 이용해 API를 활용해보면 된다.
 
 ## 활용방법
 1. localhost:8000/docs에 접근해 인증/인가 서버 명세 확인 및 API 테스트 수행.
@@ -32,7 +32,7 @@ DB -> 기본 테이블 및 데이터 Initialize -> API 서버 순으로 실행 �
 4. vscode Testing Extension을 활용하여 로컬 환경에서 테스트 진행.
 
 **test_db 컨테이너** (localhost:5433, id:test,pwd:test1!)
-**pyler_auth_test 컨테이너** (localhost:9999/docs, 계정과 권한은 아래 실제 서버와 상동)
+**pyler_auth_test 컨테이너** (localhost:9999/docs, 계정과 권한은 아래 실제 \[인증/인가\] 서버와 상동)
 
 
 ## 서비스 설명
@@ -81,5 +81,3 @@ admin : 계정 admin 권한 부여, video 추가/삭제, video 조회
 ### 1. API 명세서
 1. [Auth Swagger Docs](http://localhost:8001/docs)
 2. [Video Hub SwaggerDocs](http://localhost:8000/docs)
-3. [video_hub_openapi.json](resources/video_hub_openapi.json)
-4. [auth_openapi.json](resources/auth_openapi.json)
