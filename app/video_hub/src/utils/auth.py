@@ -1,10 +1,14 @@
+import os
 from typing import Dict, List, Optional
 from fastapi import Depends, HTTPException, status
 import jwt
 from fastapi.security import OAuth2PasswordBearer
 from configure import ALGORITHM, SECRET_KEY
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="http://localhost:8001/token")
+#test http://localhost:9999/token
+#real http://localhost:8001/token
+TOKEN_URL = os.getenv("TOKEN_URL", "http://localhost:9999/token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl=TOKEN_URL)
 
 def verify_access_token(token: str = Depends(oauth2_scheme)) -> Dict[str, str | List[str]] | None:
     '''토큰 검증 Dependency'''

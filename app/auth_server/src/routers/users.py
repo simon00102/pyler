@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 from typing import Annotated
 from fastapi.security import OAuth2PasswordRequestForm
@@ -8,7 +8,7 @@ from cores.users import register_user, login_for_access_token
 
 router = APIRouter(tags=["User"])
 
-@router.post("/register", response_model=schemas.UserCreate)
+@router.post("/register", response_model=schemas.UserCreate, status_code=status.HTTP_201_CREATED)
 async def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
     '''회원가입. username과 email은 고유해야 함.'''
     return register_user(user, db)

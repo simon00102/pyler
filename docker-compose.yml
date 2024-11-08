@@ -7,8 +7,11 @@ services:
     depends_on:
       pyler_db:
         condition: service_healthy  # 데이터베이스가 준비된 후에 시작
+      test_db:
+        condition: service_healthy  # 데이터베이스가 준비된 후에 시작
     environment:
       - DATABASE_URL=postgresql://pyler:pyler1!@pyler_db:5432/pyler
+      - DATABASE_TEST_URL=postgresql://test:test1!@test_db:5432/test
     entrypoint: ["python", "init_db.py"]
     restart: "on-failure"
 
@@ -31,8 +34,11 @@ services:
     depends_on:
       pyler_db:
         condition: service_healthy  # 데이터베이스가 준비된 후에 시작
+      test_db:
+        condition: service_healthy  # 데이터베이스가 준비된 후에 시작
     environment:
       - DATABASE_URL=postgresql://pyler:pyler1!@pyler_db:5432/pyler
+      - DATABASE_TEST_URL=postgresql://test:test1!@test_db:5432/test
     entrypoint: ["python", "init_db.py"]
     restart: "on-failure"
 
@@ -48,6 +54,7 @@ services:
         condition: service_completed_successfully  # db_init 실행 완료 후 시작
     environment:
       - DATABASE_URL=postgresql://pyler:pyler1!@pyler_db:5432/pyler
+      - TOKEN_URL=http://localhost:8001/token
 
 
   pyler_db:
@@ -67,5 +74,35 @@ services:
       timeout: 5s
       retries: 5
 
+  pyler_auth_test:
+    image: simon00102/auth:latest
+    container_name: auth_service_test
+    ports:
+      - "9999:8001"
+    depends_on:
+      auth_db_init:
+        condition: service_completed_successfully  # db_init 실행 완료 후 시작
+    environment:
+      - DATABASE_URL=postgresql://test:test1!@test_db:5432/test
+
+
+  test_db:
+    image: postgres:latest
+    container_name: test_db
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test1!
+      POSTGRES_DB: test
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data_test:/var/lib/postgresql/data
+    healthcheck:  # healthcheck 추가
+      test: ["CMD-SHELL", "pg_isready -U test"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
 volumes:
   postgres_data:
+  postgres_data_test:

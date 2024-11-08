@@ -5,10 +5,11 @@ from cores.videos import fetch_video_data
 def init_db():
     Base.metadata.drop_all(bind=engine)  # 테이블 삭제
     Base.metadata.create_all(bind=engine) # 테이블 생성
-    
+
     # 샘플 데이터 추가
     with Session(engine) as session:
         create_sample_data(session)
+
 
 def create_sample_data(db: Session): 
 

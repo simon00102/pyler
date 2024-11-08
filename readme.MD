@@ -4,10 +4,13 @@
 **구현 Stack**: Python 3.11, FastAPI, SQLAlchemy, Postgresql
 
 ## 실행방법
-``` docker-compose.yml up ```
+1. ``` docker-compose.yml up ```
+
 ![alt text](resources/docker-compose.png)
+
 DB -> 기본 테이블 및 데이터 Initialize -> API 서버 순으로 실행 됨
 
+2. 아래 활용방법을 이용해 API를 활용해보면 된다.
 
 ## 활용방법
 1. localhost:8000/docs에 접근해 인증/인가 서버 명세 확인 및 API 테스트 수행.
@@ -15,6 +18,22 @@ DB -> 기본 테이블 및 데이터 Initialize -> API 서버 순으로 실행 �
 3. 로그인 방법 : Authorize 내에 필요한 권한을 가진 username/password 입력.
 
 ![alt text](resources/authorize.png) ![alt text](resources/authorize2.png)
+
+
+## 테스팅
+![alt text](resources/auth_server_test.png)
+
+1. 최상단 requirements.txt를 활용하여 로컬에 python 가상환경 구축. 
+
+2. ``` docker-compose.yml up ```을 통해 **test_db**와 **pyler_auth_test**컨테이너가 가동.
+
+3. 테스트 하고싶은 서비스의 경로로 .vscode/settings.json의 "python.testing.cwd"의 값을 바꾼다.
+
+4. vscode Testing Extension을 활용하여 로컬 환경에서 테스트 진행.
+
+**test_db 컨테이너** (localhost:5433, id:test,pwd:test1!)
+**pyler_auth_test 컨테이너** (localhost:9999/docs, 계정과 권한은 아래 실제 서버와 상동)
+
 
 ## 서비스 설명
 ### 1. 인증/인가 서버

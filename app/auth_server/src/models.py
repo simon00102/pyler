@@ -1,14 +1,12 @@
-from sqlalchemy import Integer, String, ForeignKey, Table, Column
+from sqlalchemy import Integer, String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from database import Base
 
-# Many-to-Many 관계를 위한 중간 테이블 정의
-user_roles = Table(
-    "user_roles",
-    Base.metadata,
-    Column("username", ForeignKey("users.username"), primary_key=True), # type: ignore
-    Column("role_id", ForeignKey("roles.id"), primary_key=True) # type: ignore
-)
+class UserRole(Base):
+    __tablename__ = "user_roles"
+    
+    username: Mapped[str] = mapped_column(String, ForeignKey("users.username"), primary_key=True)
+    role_id:Mapped[int] = mapped_column(Integer, ForeignKey("roles.id"), primary_key=True)
 
 class User(Base):
     __tablename__ = "users"
@@ -18,7 +16,7 @@ class User(Base):
     email: Mapped[str] = mapped_column(String, unique=True, index=True)
     
     # Many-to-Many 관계 정의
-    roles: Mapped[list["Role"]] = relationship("Role", secondary=user_roles)
+    roles: Mapped[list["Role"]] = relationship("Role", secondary="user_roles")
 
 class Role(Base):
     __tablename__ = "roles"
